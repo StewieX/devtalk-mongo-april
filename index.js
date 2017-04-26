@@ -5,7 +5,11 @@
 //     cd D:\MongoDB\version 3.2\bin
 // mongod:
 //     mongod.exe --port 27021 --dbpath “D:\temp\data"
-let initCollaborators = [{firstName:'Evert', lastName:'Rossel', age: 18}, {firstName:'Jos', lastName:'Lennen', age: 33}];
+let initCollaborators = [{firstName: 'Evert', lastName: 'Rossel', age: 18}, {
+    firstName: 'Jos',
+    lastName: 'Lennen',
+    age: 33
+}];
 let initProject = {title: 'Support Platform', organisation: 'Foreach', collaborators: []};
 
 let express = require('express'),
@@ -22,24 +26,24 @@ mongoose.connect('mongodb://localhost:27021/devtalks', (err) => console.log(err)
 mongoose.connection.on('open', () => {
 
     collaboratorStore.remove((err) => {
-        if(err) console.log(err);
+        if (err) console.log(err);
 
-        for(let i = 0; i<initCollaborators.length; i++){
+        for (let i = 0; i < initCollaborators.length; i++) {
             collaboratorStore.create(initCollaborators[i], (err, collaborator) => {
-                if(err) console.log(err);
+                if (err) console.log(err);
                 else console.log(collaborator.getFullName() + ' created');
             });
         }
     });
 
     projectStore.remove((err) => {
-        if(err) console.log(err);
+        if (err) console.log(err);
         collaboratorStore.find({}, (err, collaborators) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
             else {
                 initProject.collaborators = collaborators;
                 projectStore.create(initProject, (err, project) => {
-                    if(err) console.log(err);
+                    if (err) console.log(err);
                     else console.log(project.title + ' project created');
                 });
             }
@@ -78,12 +82,23 @@ app.post('/project', (req, res) => {
 });
 
 app.get('/projects', (req, res) => {
-    collaboratorStore.find({}, (err, collaborators) => {
+    projectStore.find({}, (err, projects) => {
         if (err) {
             console.log(err);
             res.sendStatus(400);
         } else {
-            res.status(200).send(collaborators);
+            res.status(200).send(projects);
+        }
+    });
+});
+
+app.get('/projectsWithCollaborators', (req, res) => {
+    projectStore.find({}).populate('collaborators').exec((err, projects) => {
+        if (err) {
+            console.log(err);
+            res.sendStatus(400);
+        } else {
+            res.status(200).send(projects);
         }
     });
 });

@@ -15,7 +15,7 @@ let ProjectSchema = new Schema({
         enum: ['Foreach', 'Karel de Grote Hogeschool']
     },
     collaborators: [{
-            type: Schema.Object,
+            type: Schema.ObjectId,
             ref: 'Collaborator'
         }]
 }, {timestamps: true}, {minimize: true});
