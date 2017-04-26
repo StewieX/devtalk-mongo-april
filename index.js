@@ -57,10 +57,13 @@ let server = http.createServer(app);
 let port = 8081;
 
 app.post('/collaborator', (req, res) => {
-    collaboratorStore.save(req.body, (err) => {
-        console.log(err);
-        res.sendStatus(400);
-    }).then((collaborator) => res.status(200).send(collaborator));
+    collaboratorStore.create(req.body, (err, collaborator) => {
+        if(err){
+          res.status(400).send(err);
+        } else{
+            res.status(200).send(collaborator)
+        }
+    });
 });
 
 app.get('/collaborators', (req, res) => {
@@ -75,10 +78,13 @@ app.get('/collaborators', (req, res) => {
 });
 
 app.post('/project', (req, res) => {
-    projectStore.save(req.body, (err) => {
-        console.log(err);
-        res.sendStatus(400);
-    }).then((project) => res.status(200).send(project));
+    projectStore.create(req.body, (err, project) => {
+        if(err){
+            res.status(400).send(err);
+        } else{
+            res.status(200).send(project)
+        }
+    });
 });
 
 app.get('/projects', (req, res) => {
