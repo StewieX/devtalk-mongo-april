@@ -10,6 +10,10 @@ let CollaboratorSchema = new Schema({
     age: Number
 }, {timestamps: true}, {minimize: true});
 
+CollaboratorSchema.methods.getFullName = function() {
+    return this.firstName + ' ' + this.lastName;
+};
+
 CollaboratorSchema.pre('remove', function (next) {
     let collaboratorId = this._id;
     this.model('Project').find({collaborators: {$in: [collaboratorId]}})
