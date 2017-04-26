@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/StewieX/node-devtalk-mongo-april/issues"
   },
-  "homepage": "https://github.com/StewieX/node-devtalk-mongo-april#readme"
+  "homepage": "https://github.com/StewieX/node-devtalk-mongo-april#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "http": "0.0.0",
+    "mongoose": "^4.9.6"
+  }
 }
